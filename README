@@ -8,12 +8,12 @@ If using TrustZone, memory can be divided into:
 This applies to Flash and SRAM regions, which can be configured via SAU (Security Attribution Unit) and GTZC (Global TrustZone Controller).
 
 Key Differences
-Feature                	    Non-secure (NS)                          	Non-secure Callable (NSC)
-Memory location	          Typically Flash or RAM	                Small part of Secure Flash (defined in SAU + linker)
-Access by non-secure	    Fully accessible	                      Callable only via SG (Secure Gateway) instructions
-Execution from NS side	  Yes	                                    Only through special SG function calls
-Purpose	                  Main app space for non-secure code	    Gateway for non-secure → secure calls (e.g., secure services)
-Security level	          Non-secure	                            Physically secure, but marked "callable" by NS
+Feature                	        Non-secure (NS)                          	Non-secure Callable (NSC)
+Memory location	            Typically Flash or RAM	                Small part of Secure Flash (defined in SAU + linker)
+Access by non-secure	      Fully accessible	                      Callable only via SG (Secure Gateway) instructions
+Execution from NS side	    Yes	                                    Only through special SG function calls
+Purpose	                    Main app space for non-secure code	    Gateway for non-secure → secure calls (e.g., secure services)
+Security level	            Non-secure	                            Physically secure, but marked "callable" by NS
 
 TrustZone Configuration (Optional)
 You can configure Flash and SRAM2 to be:
