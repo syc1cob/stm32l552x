@@ -1,0 +1,9 @@
+The STM32L552x series (part of the STM32L5 family from STMicroelectronics) is based on the Arm® Cortex®-M33 core with TrustZone® technology. Here's a general overview of its memory regions. Specific sizes and addresses may vary slightly depending on the exact variant (e.g., STM32L552CE, STM32L552ZE, etc.).
+
+TrustZone Memory Partitioning
+If using TrustZone, memory can be divided into:
+  Secure
+  Non-secure
+  Non-secure callable areas
+This applies to Flash and SRAM regions, which can be configured via SAU (Security Attribution Unit) and GTZC (Global TrustZone Controller).
+
