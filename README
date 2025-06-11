@@ -40,4 +40,43 @@ The GTZC (Global TrustZone Controller) in the STM32L552 plays a central role in 
 It works together with the SAU (Security Attribution Unit) to:
 Mark peripherals and SRAM regions as secure or non-secure
 Control illegal access with interrupts and flags
+Purpose:
+To control secure vs non-secure access to:
+  Peripherals
+  SRAM2 memory blocks
+  Flash memory (in cooperation with SAU and option bytes)
+GTZC Components
+1. MPCBB (Memory Protection Controller Block-Based)
+Controls SRAM2 block-wise security.
+Each block (512 bytes) can be marked as:
+  Secure
+  Non-secure
+SRAM2 Example with MPCBB
+  // All SRAM2 marked as secure
+  GTZC_MPCBB2->SECCFGR[0] = 0xFFFFFFFF;
+  GTZC_MPCBB2->SECCFGR[1] = 0xFFFFFFFF;  // Each bit marks a 512B block as Secure (1) or Non-secure (0)
+2. TZSC (TrustZone Security Controller)
+Controls peripheral access.
+You configure whether a peripheral is secure or non-secure.
+Example: Configure a Peripheral as Secure
+// Make GPIOA secure
+GTZC_TZSC->SECCFGR2 |= GTZC_TZSC_SECCFGR2_GPIOASEC;
+GTZC_TZSC->SECCFGR1 |= GTZC_TZSC_SECCFGR1_USART1SEC_Msk; // Make USART1 Secure
+3. Illegal Access Detection
+GTZC can trigger interrupts if non-secure code tries to access secure resources.
+Use:
+  GTZC_TZIC (TrustZone Interrupt Controller)
+  Flags in GTZC_TZIC->SRx
+Example: Runtime Detection (GTZC_TZIC) To detect illegal access:
+if (GTZC_TZIC->SR1 & GTZC_TZIC_SR1_USART1F) {
+    // Handle unauthorized access to USART1
+    GTZC_TZIC->SR1 |= GTZC_TZIC_SR1_USART1F;  // Clear flag
+}
+GTZC complements SAU: SAU defines secure/non-secure memory regions globally, while GTZC adds fine-grained protection for SRAM and peripherals.
+GTZC settings are persistent only if set during secure initialization.
+Always configure GTZC from secure firmware (e.g., during system boot from the secure world).
+
+
+
+
 
